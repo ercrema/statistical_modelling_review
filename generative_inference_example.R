@@ -2,6 +2,8 @@ library(parallel)
 library(doSNOW)
 library(coda)
 library(here)
+library(progress)
+
 # Generate Observed Data ----
 N <- 500
 mu <- 0.007
@@ -45,8 +47,6 @@ res.obs <- unbiased.learning(N=N,mu=mu,timesteps=10000)
 # Generative Inference ----
 cl  <- makeCluster(25)
 registerDoSNOW(cl)
-library(progress)
-
 nsim <- 1000000
 tol  <- 0.00001
 pb <- progress_bar$new(total=nsim)
