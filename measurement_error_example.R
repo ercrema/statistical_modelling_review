@@ -13,32 +13,18 @@ true.sigma <- 70 #True Error
 n <- 100 #Sample Size
 d <- runif(n=n,min=0,max=1000) |> round()
 calendar.dates <- rnorm(n=n,mean=true.alpha - true.beta*d,sd=true.sigma) |> round()
-
-# #Optional plot regression on calendar dates
-par(mfrow=c(1,3))
-plot(d,calendar.dates,xlim=c(0,1000),ylim=rev(range(calendar.dates)),pch=20,xlab='x',ylab='Calendar Dates (no measurement error)')
-abline(a=true.alpha,b=-true.beta,lty=2,lwd=2,col='red')
-abline(lm(calendar.dates~d),col='blue')
-
 c14ages <- uncalibrate(calendar.dates)[,4] #back-calibrate calendar date in 14C age
 c14ages.error <- rep(30,n) #assign errors
 median.calibrated <- calibrate(c14ages,c14ages.error) |> medCal() #calibrate and compute median calibrated dates
 
-# #Optional plot regression on median calibrated dates
-# plot(d,median.calibrated,xlim=c(0,1000),ylim=rev(range(median.calibrated)),pch=20)
-# abline(a=true.alpha,b=-true.beta,lty=2,lwd=2,col='red')
-# abline(lm(median.calibrated~d),col='blue')
-
 # Run regression analysis on calendar dates ----
 fitcal  <- lm(calendar.dates~d,data=data.frame(d=d,calendar.dates=calendar.dates))
-
 
 # Run regression analyses on median calibrated dates ----
 fitmed <- lm(median.calibrated~d,data=data.frame(d=d,median.calibrated=median.calibrated))
 confint(fitmed)
 
-
-# Run Bayesian regression analyses on 14C dates ----
+# Run Bayesian EIV via Nimble ----
 # Prepare data list:
 dat <- list()
 dat$cra <- c14ages
@@ -114,7 +100,7 @@ pred$b <- apply(predmatrix,2,mean)
 pred$b.lo95 <- apply(predmatrix,2,function(x){HPDinterval(mcmc(x))[1]})
 pred$b.hi95 <- apply(predmatrix,2,function(x){HPDinterval(mcmc(x))[2]})
 
-# Extract values for violin plot ----
+# Extract values for error plot ----
 cl <- calibrate(c14ages,c14ages.error,calMatrix=TRUE,timeRange=c(3000,2000))
 caldd <- vector('list',length=100)
 sc  <- 1000
@@ -125,12 +111,8 @@ for (i in 1:100)
 	caldd[[i]] <- data.frame(xx=xx,yy=yy)
 }
 
-
-
-
-
 # Plot Results ----
-pdf(here('figures','figure_measurementerror.pdf',height=3.5,width=9)
+pdf(here('figures','figure2_measurementerror.pdf'),height=3.5,width=9)
 par(mfrow=c(1,3),mar=c(4,4,2,1))
 par(lend=2)
 plot(d,calendar.dates,xlim=c(0,1000),ylim=c(2850,2100),pch=19,ylab='BP',xlab='x',col=adjustcolor('black',0.6))
@@ -153,12 +135,6 @@ for (i in 1:length(calendar.dates))
 points(d,calendar.dates,pch=20)
 points(d,median.calibrated,pch=4)
 legend(x=20,y=2100,legend=c('Calendar Date','Median Calibrated Date','Calibrated Distribution'),pch=c(19,4,NA),lwd=c(NA,NA,8),col=c('black','black','lightblue'),bty='n',cex=0.9)
-
-/home/erc62/gitrepos/statistical_modelling_review/generative_inference/frequencies.pdf
-/home/erc62/gitrepos/statistical_modelling_review/generative_inference/generative_inference_example.R
-/home/erc62/gitrepos/statistical_modelling_review/generative_inference/priorposterior.pdf
-/home/erc62/gitrepos/statistical_modelling_review/generative_inference/schematic.png
-/home/erc62/gitrepos/statistical_modelling_review/generative_inference/schematic.svg
 plot(NA,xlim=c(0,1000),ylim=c(2850,2100),pch=19,ylab='BP',xlab='x')
 abline(a=true.alpha,b=-true.beta,lty=2,lwd=2)
 lines(pred$d,pred$m,lwd=2,col='darkorange')
