@@ -1,8 +1,8 @@
-# R scripts for the manuscript 'Statistical Modelling in Archaeology: recent trends and future perspectives'
+# R scripts for the manuscript 'Statistical Modelling in Archaeology: some recent trends and future perspectives'
 
 This repository contains data and scripts used in the manuscript:
 
-Crema, E.R. (Submitted) Statistical Modelling in Archaeology: recent trends and future perspectives.
+Crema, E.R. (Submitted) Statistical Modelling in Archaeology: some recent trends and future perspectives.
 
 The repository contains R scripts for generating figures 1-3 in the manuscript. All data required to produce the figures are generated via simulation and described in each file. All scripts are stand-alone so that users can run the script for each figure separately:
 
