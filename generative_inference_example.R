@@ -3,6 +3,9 @@ library(doSNOW)
 library(coda)
 library(here)
 library(progress)
+library(latex2exp)
+
+# NOTE - the run time for lines 51-76 is approximately 10 hours using a 25 core machine. Users interested in just exploring the results of the generative inference can run the script till line 50, skip lines 51-76, and continue from line 79 reading the CSV file storing the simulation ouput.
 
 # Generate Observed Data ----
 N <- 500
@@ -67,10 +70,15 @@ res.div <- foreach(i=1:nsim,.combine=c,.options.snow=opts) %dopar%
 
 stopCluster(cl)
 
-d  <- (obs.div-res.div)^2
-d.top.index  <- which(d <= tol)
-posterior <- mu.prior[d.top.index]
-# HPDinterval(mcmc(posterior),0.9)
+# Store output into .CSV ----
+d  <- (res.obs$obs.div-res.div)^2
+simres <- data.frame(mu.candidate=mu.prior,diversity=d)
+write.csv(simres,'gen_sim_out.csv')
+
+# Read output from .CSV ----
+simres <- read.csv(here('gen_sim_out.csv'))
+d.top.index  <- which(simres$diversity <= tol)
+posterior <- simres$mu.candidate[d.top.index]
 
 
 # Make Figures ----
@@ -115,8 +123,3 @@ plot(dens.posterior,xlab=TeX(r'($\mu$)'),type='l',ylab='Probability Density',mai
 i  <- which(dens.posterior$x >= HPDinterval(mcmc(posterior))[1] & dens.posterior$x <= HPDinterval(mcmc(posterior))[2])
 polygon(c(dens.posterior$x[i],rev(dens.posterior$x[i])),c(dens.posterior$y[i],rep(0,length(i))),border=NA,col=adjustcolor('firebrick',0.5))
 dev.off()
-
-
-
-
-
