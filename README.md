@@ -4,13 +4,13 @@ This repository contains data and scripts used in the manuscript:
 
 Crema, E.R. (Submitted) Statistical Modelling in Archaeology: some recent trends and future perspectives.
 
-The repository contains R scripts for generating figures 1-3 in the manuscript. All data required to produce the figures are generated via simulation and described in each file. All scripts are stand-alone so that users can run the script for each figure separately:
+The repository contains R scripts for generating figures 1-3 in the manuscript. All data required to produce the figures are generated via simulation and described in each file. All scripts are stand-alone so that users can run the script for each figure separately. The repository contains a Dockerfile for executing all scripts in a container.
 
 | Script                           | Output                                                     | Manuscript Figure | Approximate Runtime | Additional Notes                                                                                                                              |
 |----------------------------------|------------------------------------------------------------|-------------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
 | `multilevelmodel_example.R`      | `figure1_multilevelmodel.pdf`                              | Figure 1          | < 10 minutes        |  -                                                                                                                                            |
 | `measurement_error_example.R`    | `figure2_measurementerror.pdf`                             | Figure 2          | < 30 minutes        |  -                                                                                                                                            |
-| `generative_inference_example.R` | `figure3_frequencies.pdf` and `figure3_priorposterior.pdf` | Figure 3          | ca. 12 hours        | Runtime based on parallel computation over 25 core; Figure 3 was generated combining the two outputs on inkscape (see `figure3_combined.svg`) |
+| `generative_inference_example.R` | `figure3_frequencies.pdf` and `figure3_priorposterior.pdf` | Figure 3          | ca. 8-10 hours        | Runtime based on parallel computation over 25 core; Figure 3 was generated combining the two outputs on Inkscape (see `figure3_combined.svg`) |
 
 
 ## R Session Info
