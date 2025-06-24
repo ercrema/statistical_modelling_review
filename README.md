@@ -2,7 +2,7 @@
 
 This repository contains data and scripts used in the manuscript:
 
-Crema, E.R. (Forthcoming) Statistical Modelling in Archaeology: some recent trends and future perspectives._Journal of Archaeological Science_
+Crema, E. R. (2025). Statistical modelling in archaeology: some recent trends and future perspectives. Journal of Archaeological Science, 180, 106295. https://doi.org/10.1016/j.jas.2025.106295
 
 The repository contains R scripts for generating figures 1-3 in the manuscript. All data required to produce the figures are generated via simulation and described in each file. All scripts are stand-alone so that users can run the script for each figure separately. The repository contains a Dockerfile for executing all scripts in a container.
 
